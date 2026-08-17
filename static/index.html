@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent AI Research Assistant</title>
+    <meta name="description" content="An autonomous multi-agent research system powered by LangChain, search agents, content readers, report writers, and critics.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Marked.js for rendering markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Header / Navbar -->
+        <header class="navbar">
+            <div class="logo">
+                <div class="logo-icon">🔬</div>
+                <span class="logo-text">Researcher<span class="highlight">Agent</span></span>
+            </div>
+            <div class="header-badge">
+                <span class="pulse-dot"></span>
+                <span>Multi-Agent System v2.0</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-eyebrow">LANGCHAIN MULTI-AGENT ARCHITECTURE</div>
+                <h1>Autonomous <span>Research Assistant</span></h1>
+                <p class="hero-sub">
+                    Four specialized AI agents collaborate — searching, scraping, writing,
+                    and critiquing — to deliver a polished research report on any topic.
+                </p>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Workspace Layout Grid -->
+            <div class="workspace-grid">
+                
+                <!-- Left Column: Input Form & Examples -->
+                <div class="input-section">
+                    <div class="input-card">
+                        <label for="topic-input" class="input-label">RESEARCH TOPIC</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass input-icon"></i>
+                            <input 
+                                type="text" 
+                                id="topic-input" 
+                                placeholder="e.g. Roadmap for AGI development in next 5 years"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <button id="run-btn" class="btn-primary">
+                            <span class="btn-text">⚡ Run Research Pipeline</span>
+                            <span class="btn-loader hidden">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> Processing...
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Example Chips -->
+                    <div class="examples-container">
+                        <span class="examples-label">TRY →</span>
+                        <div class="chips-group">
+                            <button class="chip" data-topic="Future of LLM in Tech Industry">Future of LLM in Tech Industry</button>
+                            <button class="chip" data-topic="All Latest AI Agents in 2026">All Latest AI Agents in 2026</button>
+                            <button class="chip" data-topic="Roadmap for AGI development in next 5 years">Roadmap for AGI in next 5 years</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Pipeline Stepper -->
+                <div class="pipeline-section">
+                    <div class="section-heading">
+                        <span>Pipeline Workflow</span>
+                        <div id="progress-bar-track" class="progress-track">
+                            <div id="progress-bar-fill" class="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="pipeline-steps">
+                        <!-- Step 1 -->
+                        <div class="step-card" id="step-search" data-step="search">
+                            <div class="step-header">
+                                <span class="step-num">01</span>
+                                <span class="step-title">Search Agent</span>
+                                <span class="step-status status-waiting">WAITING</span>
+                            </div>
+                            <div class="step-desc">Gathers recent web information & links</div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="step-card" id="step-reader" data-step="reader">
+                            <div class="step-header">
+                                <span class="step-num">02</span>
+                                <span class="step-title">Reader Agent</span>
+                                <span class="step-status status-waiting">WAITING</span>
+                            </div>
+                            <div class="step-desc">Scrapes & extracts deep content from top URLs</div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="step-card" id="step-writer" data-step="writer">
+                            <div class="step-header">
+                                <span class="step-num">03</span>
+                                <span class="step-title">Writer Chain</span>
+                                <span class="step-status status-waiting">WAITING</span>
+                            </div>
+                            <div class="step-desc">Drafts the full structured research report</div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="step-card" id="step-critic" data-step="critic">
+                            <div class="step-header">
+                                <span class="step-num">04</span>
+                                <span class="step-title">Critic Chain</span>
+                                <span class="step-status status-waiting">WAITING</span>
+                            </div>
+                            <div class="step-desc">Reviews, evaluates & scores the final report</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Results Section (Initially Hidden) -->
+            <section id="results-section" class="results-section hidden">
+                <div class="divider"></div>
+                <div class="section-heading">Research Output & Analysis</div>
+
+                <!-- Accordion 1: Raw Search Results -->
+                <div class="accordion">
+                    <button class="accordion-header" id="acc-search-btn">
+                        <span>🔍 Search Results (raw)</span>
+                        <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                    </button>
+                    <div class="accordion-body hidden" id="acc-search-body">
+                        <div class="raw-box" id="raw-search-content"></div>
+                    </div>
+                </div>
+
+                <!-- Accordion 2: Raw Scraped Content -->
+                <div class="accordion">
+                    <button class="accordion-header" id="acc-reader-btn">
+                        <span>📄 Scraped Content (raw)</span>
+                        <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                    </button>
+                    <div class="accordion-body hidden" id="acc-reader-body">
+                        <div class="raw-box" id="raw-reader-content"></div>
+                    </div>
+                </div>
+
+                <!-- Report Panel -->
+                <div class="report-panel" id="report-panel">
+                    <div class="panel-header">
+                        <div class="panel-label orange">
+                            <i class="fa-solid fa-file-pen"></i> Final Research Report
+                        </div>
+                        <div class="panel-actions">
+                            <button id="copy-report-btn" class="action-btn" title="Copy Markdown">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                            <button id="download-report-btn" class="action-btn download" title="Download Markdown">
+                                <i class="fa-solid fa-download"></i> Download (.md)
+                            </button>
+                        </div>
+                    </div>
+                    <div class="markdown-body" id="report-content"></div>
+                </div>
+
+                <!-- Critic Panel -->
+                <div class="feedback-panel" id="feedback-panel">
+                    <div class="panel-header">
+                        <div class="panel-label green">
+                            <i class="fa-solid fa-clipboard-check"></i> Critic Feedback & Review
+                        </div>
+                    </div>
+                    <div class="markdown-body" id="critic-content"></div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>ResearchAgent · Powered by LangChain multi-agent pipeline · FastAPI & HTML/CSS/JS</p>
+        </footer>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+
+    </div>
+
+    <!-- App JavaScript -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
